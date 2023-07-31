@@ -142,7 +142,7 @@ def initialize_upload(youtube, options):
   )
 
   id=resumable_upload(insert_request)
-    return id
+  return id
 # This method implements an exponential backoff strategy to resume a
 # failed upload.
 def resumable_upload(insert_request):
