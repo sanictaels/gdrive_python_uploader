@@ -141,8 +141,8 @@ def initialize_upload(youtube, options):
     media_body=MediaFileUpload(options.file, chunksize=-1, resumable=True)
   )
 
-  resumable_upload(insert_request)
-
+  id=resumable_upload(insert_request)
+    return id
 # This method implements an exponential backoff strategy to resume a
 # failed upload.
 def resumable_upload(insert_request):
@@ -177,7 +177,8 @@ def resumable_upload(insert_request):
       sleep_seconds = random.random() * max_sleep
       print ("Sleeping %f seconds and then retrying..." % sleep_seconds)
       time.sleep(sleep_seconds)
-  
+    return response.get('id')
+    
 if __name__ == '__main__':
     title = input("Enter the Title: ")
     verse = input("Enter the Verse: ")
@@ -186,7 +187,7 @@ if __name__ == '__main__':
     fname = today.strftime("%d_%b_%Y.mp4").lower()
     print("Title : " + title + "\nVerse : " + verse + "\nPreacher : Pastor " + p_name )
     input("Press any key to confirm")
-    upload_basic(fname)
+    gdriveID = upload_basic(fname)
     argparser.add_argument("--file", default=fname)
     argparser.add_argument("--title", help="Video title", default=title)
     argparser.add_argument("--description", help="Video description",
@@ -201,6 +202,9 @@ if __name__ == '__main__':
     args = argparser.parse_args()
     youtube = get_authenticated_service(args)
     try:
-        initialize_upload(youtube, args)
+        utub_id = initialize_upload(youtube, args)
     except HttpError as e:
         print ("An HTTP error %d occurred:\n%s" % (e.resp.status, e.content))
+    print ("Youtube ID : " + utub_id)
+    print ("Gdrive ID : " + gdriveID)
+    print ("Youtube Thumbnail : https://img.youtube.com/vi/"+ utub_id +"/default.jpg" )
