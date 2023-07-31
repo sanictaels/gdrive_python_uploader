@@ -1,4 +1,4 @@
-#gdrive_python_uploader
+# gdrive_python_uploader
 Hi frenz, simple script to upload archive files to google drive.
 Script should automatically set file name as DD_MMM_YYYY.mp4. If there's any changes..GG.
 
