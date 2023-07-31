@@ -26,12 +26,12 @@ httplib2.RETRIES = 1
 MAX_RETRIES = 10
 
 # Always retry when these exceptions are raised.
-RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error)
+RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error,)
 
 # Always retry when an apiclient.errors.HttpError with one of these status
 # codes is raised.
 RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
-CLIENT_SECRETS_FILE = "token.json"
+CLIENT_SECRETS_FILE = "test.json"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
@@ -72,7 +72,7 @@ def upload_basic(Filename):
         last_progress = 0
         pbar = tqdm(total=100, desc= "Uploading file :" + filename_noext, unit='KB')
         print ("File selected :" + filename)
-        print ("Total size :" + str(int(filesize/1024)) + "MB")
+#        print ("Total size :" + str(int(filesize/1024)) + "MB")
         while response is None:
             status, response = file.next_chunk()
             if status:
@@ -95,8 +95,7 @@ def upload_basic(Filename):
 
 def get_authenticated_service(args):
   flow = flow_from_clientsecrets(CLIENT_SECRETS_FILE,
-    scope=YOUTUBE_UPLOAD_SCOPE,
-    message=MISSING_CLIENT_SECRETS_MESSAGE)
+    scope=SCOPES)
 
   storage = Storage("%s-oauth2.json" % sys.argv[0])
   credentials = storage.get()
